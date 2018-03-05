@@ -57,7 +57,7 @@
     - facts
 
 - name: container_download | save container images
-  shell: "{{ docker_bin_dir }}/docker save {{ pull_args }} | gzip -{{ download_compress }} > {{ fname }}"
+  shell: "{{ docker_bin_dir }}/docker save {{ download.repo }}:{{ download.tag }} | gzip -{{ download_compress }} > {{ fname }}"
   delegate_to: "{{ download_delegate }}"
   delegate_facts: no
   register: saved
