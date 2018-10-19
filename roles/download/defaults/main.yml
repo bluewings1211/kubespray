@@ -7,7 +7,7 @@ skip_downloads: false
 # if this is set to true will only download files once. Doesn't work
 # on Container Linux by CoreOS unless the download_localhost is true and localhost
 # is running another OS type. Default compress level is 1 (fastest).
-download_run_once: False
+download_run_once: True
 download_compress: 1
 
 # if this is set to true, uses the localhost for download_run_once mode
@@ -15,7 +15,7 @@ download_compress: 1
 # local caching of docker images or for Container Linux by CoreOS cluster nodes.
 # Otherwise, uses the first node in the kube-master group to store images
 # in the download_run_once mode.
-download_localhost: False
+download_localhost: True
 
 # Always pull images if set to True. Otherwise check by the repo's tag/digest.
 download_always_pull: False
@@ -90,7 +90,7 @@ contiv_etcd_init_image_repo: "ferest/etcd-initer"
 contiv_etcd_init_image_tag: latest
 cilium_image_repo: "docker.io/cilium/cilium"
 cilium_image_tag: "{{ cilium_version }}"
-nginx_image_repo: nginx
+nginx_image_repo: docker.io/nginx
 nginx_image_tag: 1.13
 dnsmasq_version: 2.78
 dnsmasq_image_repo: "andyshinn/dnsmasq"
@@ -111,7 +111,7 @@ dnsmasqautoscaler_image_tag: "{{ dnsmasqautoscaler_version }}"
 kubednsautoscaler_version: 1.1.2
 kubednsautoscaler_image_repo: "gcr.io/google_containers/cluster-proportional-autoscaler-amd64"
 kubednsautoscaler_image_tag: "{{ kubednsautoscaler_version }}"
-test_image_repo: busybox
+test_image_repo: docker.io/busybox
 test_image_tag: latest
 elasticsearch_version: "v5.6.4"
 elasticsearch_image_repo: "k8s.gcr.io/elasticsearch"

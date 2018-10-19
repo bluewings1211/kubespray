@@ -90,7 +90,7 @@ kube_users:
 
 # Choose network plugin (cilium, calico, weave or flannel)
 # Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
-kube_network_plugin: calico
+kube_network_plugin: canal
 
 # Determines if calico-rr group exists
 peer_with_calico_rr: "{{ 'calico-rr' in groups and groups['calico-rr']|length > 0 }}"
@@ -222,6 +222,8 @@ kube_feature_gates:
   - "PersistentLocalVolumes={{ local_volume_provisioner_enabled | string }}"
   - "VolumeScheduling={{ local_volume_provisioner_enabled | string }}"
   - "MountPropagation={{ local_volume_provisioner_enabled | string }}"
+  - "Accelerators={{ accelerators_enabled|string }}"
+  - "DevicePlugins={{ device_plugins_enabled|string }}"
 
 # Vault data dirs.
 vault_base_dir: /etc/vault
@@ -297,7 +299,7 @@ kube_apiserver_access_address: "{{ access_ip | default(kube_apiserver_address) }
 first_kube_master: "{{ hostvars[groups['kube-master'][0]]['access_ip'] | default(hostvars[groups['kube-master'][0]]['ip'] | default(hostvars[groups['kube-master'][0]]['ansible_default_ipv4']['address'])) }}"
 loadbalancer_apiserver_localhost: "{{ loadbalancer_apiserver is not defined }}"
 # applied if only external loadbalancer_apiserver is defined, otherwise ignored
-apiserver_loadbalancer_domain_name: "lb-apiserver.kubernetes.local"
+apiserver_loadbalancer_domain_name: "kubernetes"
 kube_apiserver_endpoint: |-
   {% if not is_kube_master and loadbalancer_apiserver_localhost -%}
        https://localhost:{{ nginx_kube_apiserver_port|default(kube_apiserver_port) }}
@@ -305,7 +307,7 @@ kube_apiserver_endpoint: |-
        https://{{ kube_apiserver_bind_address | regex_replace('0\.0\.0\.0','127.0.0.1') }}:{{ kube_apiserver_port }}
   {%- else -%}
   {%-   if loadbalancer_apiserver is defined and loadbalancer_apiserver.port is defined -%}
-       https://{{ apiserver_loadbalancer_domain_name|default('lb-apiserver.kubernetes.local') }}:{{ loadbalancer_apiserver.port|default(kube_apiserver_port) }}
+       https://{{ apiserver_loadbalancer_domain_name|default('kubernetes') }}:{{ loadbalancer_apiserver.port|default(kube_apiserver_port) }}
   {%-   else -%}
        https://{{ first_kube_master }}:{{ kube_apiserver_port }}
   {%-  endif -%}
@@ -357,3 +359,5 @@ etcd_events_peer_addresses: |-
   {% for item in groups['etcd'] -%}
     {{ "etcd"+loop.index|string }}-events=https://{{ hostvars[item].access_ip | default(hostvars[item].ip | default(hostvars[item].ansible_default_ipv4['address'])) }}:2382{% if not loop.last %},{% endif %}
   {%- endfor %}
+accelerators_enabled: true
+device_plugins_enabled: true
