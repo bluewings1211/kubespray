@@ -18,8 +18,9 @@
   when: not download_always_pull
 
 - set_fact:
-    pull_required: >-
-      {%- if pull_args in docker_images.stdout.split(',') %}false{%- else -%}true{%- endif -%}
+    pull_required: false
+    #pull_required: >-
+    #  {%- if pull_args in docker_images.stdout.split(',') %}false{%- else -%}true{%- endif -%}
   when: not download_always_pull
 
 - name: Check the local digest sha256 corresponds to the given image tag

@@ -429,6 +429,42 @@ downloads:
     version: "{{ vault_version }}"
     groups:
       - vault
+  heapster:
+    enabled: true
+    container: true
+    repo: "k8s.gcr.io/heapster-amd64"
+    tag: "v1.4.2"
+    sha256: ""
+  kubernetes_dashboard:
+    enabled: true
+    container: true
+    repo: "gcr.io/google_containers/kubernetes-dashboard-amd64"
+    tag: "v1.8.3"
+    sha256: ""
+  zabbix_agent:
+    enabled: true
+    container: true
+    repo: "zabbix/zabbix-agent"
+    tag: "ubuntu-3.0.13"
+    sha256: ""
+  cuda:
+    enable: true
+    container: true
+    repo: "docker.io/nvidia/cuda"
+    tag: "9.0-base"
+    sha256: ""
+  k8s_device_plugin:
+    enabled: true
+    container: true
+    repo: "nvidia/k8s-device-plugin"
+    tag: "1.10"
+    sha256: ""
+  metrics_server:
+    enabled: true
+    container: true
+    repo: "k8s.gcr.io/metrics-server-amd64"
+    tag: "v0.3.1"
+    sha256: ""
   registry:
     enabled: "{{ registry_enabled }}"
     container: true
